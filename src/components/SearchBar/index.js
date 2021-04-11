@@ -14,14 +14,20 @@ export default function SearchBar(props) {
         console.log(position)
     }
 
+    function getSuggests() {
+        const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${location}&sort=name,countryCode`;
+        console.log(url)
+    }
+
 
 
     return (
         <div>
-            <input 
-                className='glass'
+            <input
+                className='input-glass'
+                placeholder='Search by city...'
                 type="text"
-                onChange={()=>{}}
+                onChange={() => { }}
             />
         </div>
     )
