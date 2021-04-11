@@ -1,0 +1,16 @@
+{
+	"name": "weather-app",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "parcel <your entry file>",
+		"build": "parcel build <your entry file>"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"parcel-bundler": "^1.12.5"
+	}
+}
