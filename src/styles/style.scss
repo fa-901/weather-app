@@ -1,6 +1,9 @@
-@import "./reboot.css";
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
+
+$c1: #23074d;
 
 body {
+    font-family: 'Nunito', sans-serif;
     background-color: #21d4fd;
     background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
     padding: 0.75rem 0;
@@ -26,4 +29,11 @@ div#app {
     -webkit-backdrop-filter: blur(4px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.footer {
+    font-size: 0.8rem;
+    a {
+        color: $c1;
+    }
 }
