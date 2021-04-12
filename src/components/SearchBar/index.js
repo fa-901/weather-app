@@ -1,24 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback  } from 'react';
+import _ from 'lodash';
 
 export default function SearchBar(props) {
     const [location, setLoc] = useState('');
+    const [loading, setLoad] = useState(false);
+    const debounceLoadData = useCallback(_.debounce(getSuggests, 750), []);
+
 
     useEffect(() => {
-        console.log(process.env.API_KEY)
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         }
     }, []);
 
     function showPosition(position) {
-        console.log(position)
+        const { latitude, longitude } = position.coords;
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.API_KEY}`
+        fetch(url)
+            .then(response => response.json())
+            .then(data => console.log(data));;
     }
 
-    function getSuggests() {
-        const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${location}&sort=name,countryCode`;
+    function getSuggests(val) {
+        const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
         console.log(url)
     }
 
+    function inputChange(e) {
+        const { value } = e.currentTarget;
+        setLoc(value);
+        debounceLoadData(value);
+    }
 
     return (
         <div className='input-glass d-flex'>
@@ -26,7 +38,7 @@ export default function SearchBar(props) {
                 className='flex-fill'
                 placeholder='Search by city...'
                 type="text"
-                onChange={() => { }}
+                onChange={inputChange}
             />
             <div className='border-start ps-2'>
                 <i className="fas fa-search-location"></i>
