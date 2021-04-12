@@ -20,15 +20,17 @@ export default function SearchBar(props) {
     }
 
 
-
     return (
-        <div>
+        <div className='input-glass d-flex'>
             <input
-                className='input-glass'
+                className='flex-fill'
                 placeholder='Search by city...'
                 type="text"
                 onChange={() => { }}
             />
+            <div className='border-start ps-2'>
+                <i className="fas fa-search-location"></i>
+            </div>
         </div>
     )
 }

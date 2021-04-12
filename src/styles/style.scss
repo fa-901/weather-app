@@ -40,8 +40,19 @@ div#app {
     border: 1px solid rgba(255, 255, 255, 0.18);
     padding: 0.2rem 1rem;
     width: 100%;
+    color: $c1;
 
-    &:focus {
+    input {
+        background: none;
+        border: none;
+        color: $c1;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &:focus-within {
         background-color: rgba(255, 255, 255, 0.75);
         outline: none;
         border: 1px solid rgba(255, 255, 255, 0.4);
