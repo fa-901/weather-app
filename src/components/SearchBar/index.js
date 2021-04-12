@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback  } from 'react';
+import React, { useEffect, useState, useCallback, Fragment } from 'react';
 import _ from 'lodash';
 
 export default function SearchBar(props) {
     const [location, setLoc] = useState('');
     const [loading, setLoad] = useState(false);
+    const [cityList, setList] = useState([]);
     const debounceLoadData = useCallback(_.debounce(getSuggests, 750), []);
-
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -18,12 +18,15 @@ export default function SearchBar(props) {
         const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.API_KEY}`
         fetch(url)
             .then(response => response.json())
-            .then(data => console.log(data));;
+            .then(data => { });
     }
 
     function getSuggests(val) {
+        setLoad(true);
         const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
-        console.log(url)
+        fetch(url)
+            .then(response => { setLoad(false); return response.json() })
+            .then(data => { setList(data?.data || []) });
     }
 
     function inputChange(e) {
@@ -32,17 +35,39 @@ export default function SearchBar(props) {
         debounceLoadData(value);
     }
 
+    const list = cityList.map((e) => {
+        return (
+            <li key={e.id} className={`list-group-item`}>
+                <div className={``}>{e.city}</div>
+                <div className={``}>{e?.region}, {e?.country}</div>
+            </li>
+        )
+    })
+
+    const icon = loading ?
+        (
+            <div className="spinner-border spinner-border-sm" role="status"></div>
+        ) :
+        (
+            <i className="fas fa-search-location"></i>
+        );
+
     return (
-        <div className='input-glass d-flex'>
-            <input
-                className='flex-fill'
-                placeholder='Search by city...'
-                type="text"
-                onChange={inputChange}
-            />
-            <div className='border-start ps-2'>
-                <i className="fas fa-search-location"></i>
+        <Fragment>
+            <div className='input-glass d-flex mb-1'>
+                <input
+                    className='flex-fill'
+                    placeholder='Search by city...'
+                    type="text"
+                    onChange={inputChange}
+                />
+                <div className='border-start ps-2'>
+                    {icon}
+                </div>
             </div>
-        </div>
+            <ul className='list-group'>
+                {list}
+            </ul>
+        </Fragment>
     )
 }
