@@ -43,6 +43,10 @@ div#app {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
+.search-input {
+    position: relative;
+}
+
 .input-glass {
     @include glass(0.45, 4);
     @include glass-border();
@@ -69,6 +73,9 @@ div#app {
 }
 
 .list-group.city-list {
+    position: absolute;
+    width: 100%;
+
     .list-group-item {
         @include glass(0.15, 2.5);
         @include glass-border();

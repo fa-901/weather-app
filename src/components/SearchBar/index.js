@@ -1,9 +1,12 @@
-import React, { useEffect, useState, useCallback, Fragment } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import List from './List';
 import _ from 'lodash';
 
 export default function SearchBar(props) {
     const [location, setLoc] = useState('');
+    const inputRef = useRef(null);
     const [loading, setLoad] = useState(false);
+    const [showList, toggleShow] = useState(false);
     const [cityList, setList] = useState([]);
     const debounceLoadData = useCallback(_.debounce(getSuggests, 750), []);
 
@@ -11,6 +14,11 @@ export default function SearchBar(props) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         }
+        document.addEventListener("click", handleClickOutside, false);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside, false);
+        };
     }, []);
 
     function showPosition(position) {
@@ -39,35 +47,32 @@ export default function SearchBar(props) {
         debounceLoadData(value);
     }
 
-    const list = cityList.map((e) => {
-        return (
-            <li key={e.id} className={`list-group-item`}>
-                <div className={``}>{e.city}</div>
-                <div className={``}>{e?.region}, {e?.country}</div>
-            </li>
-        )
-    })
-
-    const ul = (
-        <ul className='list-group city-list'>
-            {list}
-        </ul>
-    )
+    function handleClickOutside(e) {
+        if (inputRef.current && !inputRef.current.contains(e.target)) {
+            toggleShow(false);
+        }
+    }
 
     return (
-        <Fragment>
+        <div className='search-input' ref={inputRef}>
             <div className='input-glass d-flex mb-1'>
                 <input
                     className='flex-fill'
                     placeholder='Search by city...'
                     type="text"
                     onChange={inputChange}
+                    onFocus={() => { toggleShow(true) }}
+                    value={location}
                 />
                 <div className='border-start ps-2'>
                     <i className={loading ? 'spinner-border spinner-border-sm' : "fas fa-search-location"}></i>
                 </div>
             </div>
-            {list.length > 0 && ul}
-        </Fragment>
+            <List
+                list={cityList}
+                show={showList}
+                onClick={(e) => { setLoc(e) }}
+            />
+        </div>
     )
 }
