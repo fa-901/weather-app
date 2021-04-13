@@ -14,10 +14,10 @@ export default function SearchBar(props) {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         }
-        document.addEventListener("click", handleClickOutside, false);
+        document.addEventListener("mousedown", handleClickOutside, false);
 
         return () => {
-            document.removeEventListener("click", handleClickOutside, false);
+            document.removeEventListener("mousedown", handleClickOutside, false);
         };
     }, []);
 
@@ -71,7 +71,7 @@ export default function SearchBar(props) {
             <List
                 list={cityList}
                 show={showList}
-                onClick={(e) => { setLoc(e) }}
+                onClick={(e) => { setLoc(e); toggleShow(false); }}
             />
         </div>
     )
