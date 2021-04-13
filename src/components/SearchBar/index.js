@@ -44,14 +44,6 @@ export default function SearchBar(props) {
         )
     })
 
-    const icon = loading ?
-        (
-            <div className="spinner-border spinner-border-sm" role="status"></div>
-        ) :
-        (
-            <i className="fas fa-search-location"></i>
-        );
-
     return (
         <Fragment>
             <div className='input-glass d-flex mb-1'>
@@ -62,10 +54,10 @@ export default function SearchBar(props) {
                     onChange={inputChange}
                 />
                 <div className='border-start ps-2'>
-                    {icon}
+                    <i className={loading ? 'spinner-border spinner-border-sm' : "fas fa-search-location"}></i>
                 </div>
             </div>
-            <ul className='list-group'>
+            <ul className='list-group city-list'>
                 {list}
             </ul>
         </Fragment>

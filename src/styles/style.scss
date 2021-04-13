@@ -2,6 +2,18 @@
 
 $c1: #23074d;
 
+@mixin glass-border {
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+@mixin glass($trans, $blur) {
+    background: rgba(255, 255, 255, $trans);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(#{$blur}px);
+    -webkit-backdrop-filter: blur(#{$blur}px);
+}
+
 body {
     font-family: "Nunito", sans-serif;
     background-color: #21d4fd;
@@ -32,12 +44,9 @@ div#app {
 }
 
 .input-glass {
-    background: rgba(255, 255, 255, 0.45);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    @include glass(0.45, 4);
+    @include glass-border();
     border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
     padding: 0.2rem 1rem;
     width: 100%;
     color: $c1;
@@ -56,6 +65,21 @@ div#app {
         background-color: rgba(255, 255, 255, 0.75);
         outline: none;
         border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+}
+
+.list-group.city-list {
+    @include glass-border();
+
+    .list-group-item {
+        @include glass(0.15, 2.5);
+
+        &:focus,
+        &:hover {
+            @include glass(0.2, 5);
+            cursor: pointer;
+        }
+        box-shadow: none;
     }
 }
 
