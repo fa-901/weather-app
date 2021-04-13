@@ -69,10 +69,19 @@ div#app {
 }
 
 .list-group.city-list {
-    @include glass-border();
-
     .list-group-item {
         @include glass(0.15, 2.5);
+        @include glass-border();
+
+        &:not(:last-child) {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        &:not(:first-child) {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-top: 0;
+        }
 
         &:focus,
         &:hover {

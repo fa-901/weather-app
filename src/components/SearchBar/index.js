@@ -22,6 +22,10 @@ export default function SearchBar(props) {
     }
 
     function getSuggests(val) {
+        if (!val) {
+            setList([]);
+            return
+        }
         setLoad(true);
         const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
         fetch(url)
@@ -44,6 +48,12 @@ export default function SearchBar(props) {
         )
     })
 
+    const ul = (
+        <ul className='list-group city-list'>
+            {list}
+        </ul>
+    )
+
     return (
         <Fragment>
             <div className='input-glass d-flex mb-1'>
@@ -57,9 +67,7 @@ export default function SearchBar(props) {
                     <i className={loading ? 'spinner-border spinner-border-sm' : "fas fa-search-location"}></i>
                 </div>
             </div>
-            <ul className='list-group city-list'>
-                {list}
-            </ul>
+            {list.length > 0 && ul}
         </Fragment>
     )
 }
