@@ -38,7 +38,7 @@ export default function SearchBar(props) {
         const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
         fetch(url)
             .then(response => { setLoad(false); return response.json() })
-            .then(data => { setList(data?.data || []) });
+            .then(data => { toggleShow(true); setList(data?.data || []) });
     }
 
     function inputChange(e) {
@@ -53,6 +53,26 @@ export default function SearchBar(props) {
         }
     }
 
+    function keyDownFn(e) {
+        /**TODO: listen to up/down arrow key presses for list navigation */
+        switch (e.key) {
+            case 'Enter':
+                toggleShow(false);
+                loadWeatherData();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function loadWeatherData(_city, _country) {
+        const str = _city ? [_city, _country].join(',') : location;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${str}&appid=${process.env.API_KEY}`;
+        fetch(url)
+            .then(response => { setLoad(false); return response.json() })
+            .then(data => { console.log(data) });
+    }
+
     return (
         <div className='search-input' ref={inputRef}>
             <div className='input-glass d-flex mb-1'>
@@ -63,6 +83,7 @@ export default function SearchBar(props) {
                     onChange={inputChange}
                     onFocus={() => { toggleShow(true) }}
                     value={location}
+                    onKeyDown={keyDownFn}
                 />
                 <div className='border-start ps-2'>
                     <i className={loading ? 'spinner-border spinner-border-sm' : "fas fa-search-location"}></i>
@@ -71,7 +92,7 @@ export default function SearchBar(props) {
             <List
                 list={cityList}
                 show={showList}
-                onClick={(e) => { setLoc(e); toggleShow(false); }}
+                onClick={(e, c) => { setLoc(e); toggleShow(false); loadWeatherData(e, c) }}
             />
         </div>
     )

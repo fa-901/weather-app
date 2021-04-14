@@ -4,7 +4,7 @@ export default function List(props) {
 
     const list = props.list.map((e) => {
         return (
-            <li key={e.id} className={`list-group-item`} onClick={()=>{props.onClick(e.city)}}>
+            <li key={e.id} className={`list-group-item`} onClick={() => { props.onClick(e.city, e.countryCode)}}>
                 <div className={``}>{e.city}</div>
                 <div className={``}>{e?.region}, {e?.country}</div>
             </li>
