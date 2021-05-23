@@ -67,10 +67,19 @@ export default function SearchBar(props) {
 
     function loadWeatherData(_city, _country) {
         const str = _city ? [_city, _country].join(',') : location;
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${str}&appid=${process.env.API_KEY}`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${str}&appid=${process.env.API_KEY}&units=metric`;
         fetch(url)
-            .then(response => { setLoad(false); return response.json() })
-            .then(data => { console.log(data) });
+            .then(response => {
+                setLoad(false);
+                if (response.ok) {
+                    return response.json()
+                }
+                else {
+                    return Promise.reject(`lol failed ${response.status}`)
+                }
+            })
+            .then(data => { console.log(data) })
+            .catch(err=>{ console.log(err) });
     }
 
     return (
