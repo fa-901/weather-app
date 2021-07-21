@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
+import AppContext from '../AppContext';
 import List from './List';
 import _ from 'lodash';
 
@@ -8,7 +9,8 @@ export default function SearchBar(props) {
     const [loading, setLoad] = useState(false);
     const [showList, toggleShow] = useState(false);
     const [cityList, setList] = useState([]);
-    const debounceLoadData = useCallback(_.debounce(getSuggests, 750), []);
+    const debounceLoadData = useCallback(_.debounce(getSuggests, 500), []);
+    const context = useContext(AppContext);
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -78,7 +80,7 @@ export default function SearchBar(props) {
                     return Promise.reject(`lol failed ${response.status}`)
                 }
             })
-            .then(data => { console.log(data) })
+            .then(data => { context.setWeatherData(data) })
             .catch(err=>{ console.log(err) });
     }
 
@@ -95,7 +97,7 @@ export default function SearchBar(props) {
                     onKeyDown={keyDownFn}
                 />
                 <div className='border-start ps-2'>
-                    <i className={loading ? 'spinner-border spinner-border-sm' : "fas fa-search-location"}></i>
+                    <i className={loading ? 'fas fa-spinner fa-spin' : "fas fa-search-location"}></i>
                 </div>
             </div>
             <List
