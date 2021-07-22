@@ -75,9 +75,10 @@ div#app {
 .list-group.city-list {
     position: absolute;
     width: 100%;
+    z-index: 2;
 
     .list-group-item {
-        @include glass(0.15, 2.5);
+        @include glass(0.3, 5);
         @include glass-border();
 
         &:not(:last-child) {

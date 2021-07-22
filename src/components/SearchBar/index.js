@@ -25,10 +25,14 @@ export default function SearchBar(props) {
 
     function showPosition(position) {
         const { latitude, longitude } = position.coords;
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.API_KEY}`
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.API_KEY}&units=metric`
+        context.toggleDataLoad(true);
         fetch(url)
             .then(response => response.json())
-            .then(data => { });
+            .then(data => {
+                context.toggleDataLoad(false);
+                context.setWeatherData(data)
+            });
     }
 
     function getSuggests(val) {
@@ -70,6 +74,7 @@ export default function SearchBar(props) {
     function loadWeatherData(_city, _country) {
         const str = _city ? [_city, _country].join(',') : location;
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${str}&appid=${process.env.API_KEY}&units=metric`;
+        context.toggleDataLoad(true);
         fetch(url)
             .then(response => {
                 setLoad(false);
@@ -80,12 +85,17 @@ export default function SearchBar(props) {
                     return Promise.reject(`lol failed ${response.status}`)
                 }
             })
-            .then(data => { context.setWeatherData(data) })
-            .catch(err=>{ console.log(err) });
+            .then(data => {
+                context.setWeatherData(data);
+            })
+            .catch(err => { console.log(err) })
+            .finally(() => {
+                context.toggleDataLoad(false);
+            });
     }
 
     return (
-        <div className='search-input' ref={inputRef}>
+        <div className='search-input mb-3' ref={inputRef}>
             <div className='input-glass d-flex mb-1'>
                 <input
                     className='flex-fill'
