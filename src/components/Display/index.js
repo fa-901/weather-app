@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import AppContext from '../AppContext';
+import _ from 'lodash';
 
 export default function Display(props) {
     const context = useContext(AppContext);
@@ -40,7 +41,7 @@ export default function Display(props) {
                 </div>
                 <div className="col-lg-4">
                     {/* <i className="fas fa-long-arrow-alt-up" style={{ transform: `rotate(${weatherData.wind.deg}deg)` }}></i> */}
-                    Wind {weatherData.wind.speed * 3.6} km/h
+                    Wind {_.round((weatherData.wind.speed * 3.6),1)} km/h
                 </div>
                 <div className="col-lg-4">
                     Humidity {weatherData.main.humidity}%

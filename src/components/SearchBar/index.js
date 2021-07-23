@@ -8,13 +8,16 @@ export default function SearchBar(props) {
     const inputRef = useRef(null);
     const [loading, setLoad] = useState(false);
     const [showList, toggleShow] = useState(false);
+    const [errMsg, setErrMsg] = useState(null);
     const [cityList, setList] = useState([]);
     const debounceLoadData = useCallback(_.debounce(getSuggests, 500), []);
     const context = useContext(AppContext);
 
     useEffect(() => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
+            navigator.geolocation.getCurrentPosition(showPosition, (error) => {
+                setErrMsg(`Error: ${error.message}. Try searching manually.`);
+            });
         }
         document.addEventListener("mousedown", handleClickOutside, false);
 
@@ -82,17 +85,24 @@ export default function SearchBar(props) {
                     return response.json()
                 }
                 else {
-                    return Promise.reject(`lol failed ${response.status}`)
+                    return Promise.reject(`Error: Data for "${location}" is not available.`)
                 }
             })
             .then(data => {
                 context.setWeatherData(data);
             })
-            .catch(err => { console.log(err) })
+            .catch(err => { setErrMsg(err); context.setWeatherData(null) })
             .finally(() => {
                 context.toggleDataLoad(false);
             });
     }
+
+    const errDisplay = errMsg && (
+        <div className="text-center text-error fw-bold">
+            {/* <i className="fas fa-dizzy me-2"></i> */}
+            {errMsg}
+        </div>
+    )
 
     return (
         <div className='search-input mb-3' ref={inputRef}>
@@ -102,14 +112,15 @@ export default function SearchBar(props) {
                     placeholder='Search by city...'
                     type="text"
                     onChange={inputChange}
-                    onFocus={() => { toggleShow(true) }}
+                    onFocus={() => { toggleShow(true); setErrMsg(null); }}
                     value={location}
                     onKeyDown={keyDownFn}
                 />
                 <div className='border-start ps-2'>
-                    <i className={loading ? 'fas fa-spinner fa-spin' : "fas fa-search-location"}></i>
+                    <i className={`align-middle ${loading ? 'fas fa-spinner fa-spin' : "fas fa-search-location"}`}></i>
                 </div>
             </div>
+            {errDisplay}
             <List
                 list={cityList}
                 show={showList}
