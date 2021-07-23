@@ -22,14 +22,16 @@ export default function Display(props) {
 
     return (
         <div className='glass p-3'>
-            <div>
-                {weatherData.name}
-            </div>
-            <div>
-                {Math.round(weatherData.main.temp)} &deg;C
-            </div>
-            <div>
-                {weatherData.weather[0].main}
+            <div className="current">
+                <div className='current-location'>
+                    {weatherData.name}
+                </div>
+                <div className='current-temp'>
+                    {Math.round(weatherData.main.temp)} &deg;C
+                </div>
+                <div className='current-desc'>
+                    {weatherData.weather[0].main}
+                </div>
             </div>
 
             <div className='row gx-0 text-center'>

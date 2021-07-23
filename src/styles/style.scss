@@ -76,9 +76,10 @@ div#app {
     position: absolute;
     width: 100%;
     z-index: 2;
+    color: $c1;
 
     .list-group-item {
-        @include glass(0.3, 5);
+        @include glass(0.9, 5);
         @include glass-border();
 
         &:not(:last-child) {
@@ -93,7 +94,7 @@ div#app {
 
         &:focus,
         &:hover {
-            @include glass(0.2, 5);
+            @include glass(0.9, 3);
             cursor: pointer;
             outline: none;
         }
@@ -105,5 +106,21 @@ div#app {
     font-size: 0.8rem;
     a {
         color: $c1;
+    }
+}
+
+.current {
+    text-align: center;
+    margin-bottom: 1.25rem;
+    &-location{
+        font-size: 2rem;
+        line-height: 2rem;
+    }
+    &-temp{
+        font-size: 3rem;
+    }
+    &-desc{
+        font-size: 1.75rem;
+        line-height: 1.75rem;
     }
 }
