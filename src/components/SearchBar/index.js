@@ -13,6 +13,10 @@ export default function SearchBar(props) {
     const debounceLoadData = useCallback(_.debounce(getSuggests, 500), []);
     const context = useContext(AppContext);
 
+    /** TODO: abort all previous API calls when weather data is loading */
+    // var controller = new AbortController();
+    // var signal = controller.signal;
+
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, (error) => {
@@ -45,9 +49,13 @@ export default function SearchBar(props) {
         }
         setLoad(true);
         const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
-        fetch(url)
-            .then(response => { setLoad(false); return response.json() })
-            .then(data => { toggleShow(true); setList(data?.data || []) });
+        fetch(url, { signal })
+            .then(response => {
+                setLoad(false);
+                return response.ok ? response.json() : Promise.reject(response)
+            })
+            .then(data => { toggleShow(true); setList(data?.data || []) })
+            .catch(err => { console.log(err); });
     }
 
     function inputChange(e) {
@@ -105,7 +113,7 @@ export default function SearchBar(props) {
     )
 
     return (
-        <div className='search-input mb-3' ref={inputRef}>
+        <div className='search-input' ref={inputRef}>
             <div className='input-glass d-flex mb-1'>
                 <input
                     className='flex-fill'

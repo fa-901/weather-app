@@ -22,8 +22,8 @@ export default function Display(props) {
     const date = new Date(weatherData.dt * 1000);
 
     return (
-        <div className='glass p-3'>
-            <div className="current">
+        <div className='glass p-3 current'>
+            <div className="current-container">
                 <div className='current-location'>
                     {weatherData.name}
                 </div>
