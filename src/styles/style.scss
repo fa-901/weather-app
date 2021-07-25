@@ -119,8 +119,12 @@ div#app {
         margin-bottom: 1.25rem;
     }
     &-location {
-        font-size: 2rem;
+        font-size: 1.5rem;
+        font-weight: 600;
         line-height: 2rem;
+    }
+    &-time {
+        font-size: 1.2rem;
     }
     &-temp {
         font-size: 3rem;
