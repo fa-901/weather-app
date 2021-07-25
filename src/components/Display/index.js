@@ -25,26 +25,26 @@ export default function Display(props) {
         <div className='glass p-3 current'>
             <div className="current-container">
                 <div className='current-location'>
-                    {weatherData.name}
+                    {weatherData.location}
                 </div>
                 <div className='current-temp'>
-                    {Math.round(weatherData.main.temp)} &deg;C
+                    {Math.round(weatherData.current.temp)} &deg;C
                 </div>
                 <div className='current-desc'>
-                    {weatherData.weather[0].main}
+                    {weatherData.current.weather[0].main}
                 </div>
             </div>
 
             <div className='row gx-0 text-center'>
                 <div className="col-lg-4">
-                    Feels Like {Math.round(weatherData.main.feels_like)} &deg;C
+                    Feels Like {Math.round(weatherData.current.feels_like)} &deg;C
                 </div>
                 <div className="col-lg-4">
                     {/* <i className="fas fa-long-arrow-alt-up" style={{ transform: `rotate(${weatherData.wind.deg}deg)` }}></i> */}
-                    Wind {_.round((weatherData.wind.speed * 3.6),1)} km/h
+                    Wind {_.round((weatherData.current.wind_speed * 3.6),1)} km/h
                 </div>
                 <div className="col-lg-4">
-                    Humidity {weatherData.main.humidity}%
+                    Humidity {_.round(weatherData.current.humidity, 1)}%
                 </div>
             </div>
         </div>
