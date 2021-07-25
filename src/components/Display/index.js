@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import _ from 'lodash';
+import { tempConversion } from '../../utils/functions';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -24,9 +25,8 @@ export default function Display(props) {
         return null;
     }
 
-    const { weatherData } = context;
-    const date = new Date(weatherData.current.dt * 1000);
-    const time = dayjs.tz(date, weatherData.timezone).format('D MMMM YYYY, h:mm A')
+    const { weatherData, unit, toggleUnit } = context;
+    const time = dayjs.tz((weatherData.current.dt * 1000), weatherData.timezone).format('D MMMM YYYY, h:mm A')
 
     return (
         <div className='glass p-3 current mb-3'>
@@ -38,7 +38,11 @@ export default function Display(props) {
                     {time}
                 </div>
                 <div className='current-temp'>
-                    {Math.round(weatherData.current.temp)} &deg;C
+                    <span className='me-3'>{Math.round(tempConversion(weatherData.current.temp, unit))}&deg;</span>
+                    <div className='d-inline-block units'>
+                        <span className={`d-block ${unit === 'C' && 'text-decoration-underline'}`} onClick={() => { toggleUnit('C') }} >C</span>
+                        <span className={`d-block ${unit === 'F' && 'text-decoration-underline'}`} onClick={() => { toggleUnit('F') }}>F</span>
+                    </div>
                 </div>
                 <div className='current-desc'>
                     {weatherData.current.weather[0].main}
@@ -47,11 +51,11 @@ export default function Display(props) {
 
             <div className='row gx-0 text-center'>
                 <div className="col-lg-4">
-                    Feels Like <b>{Math.round(weatherData.current.feels_like)} &deg;C</b>
+                    Feels Like <b>{Math.round(tempConversion(weatherData.current.feels_like, unit))} &deg;{unit}</b>
                 </div>
                 <div className="col-lg-4">
                     {/* <i className="fas fa-long-arrow-alt-up" style={{ transform: `rotate(${weatherData.wind.deg}deg)` }}></i> */}
-                    Wind <b>{_.round((weatherData.current.wind_speed * 3.6),1)} km/h</b>
+                    Wind <b>{_.round((weatherData.current.wind_speed * 3.6), 1)} km/h</b>
                 </div>
                 <div className="col-lg-4">
                     Humidity <b>{_.round(weatherData.current.humidity, 1)}%</b>
