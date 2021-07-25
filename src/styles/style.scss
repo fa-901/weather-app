@@ -23,8 +23,9 @@ body {
 
 html,
 body,
-div#app {
-    height: 100vh;
+div#app,
+div#app > div {
+    min-height: 100vh;
     color: #fff;
 }
 
@@ -137,4 +138,31 @@ div#app {
 
 .text-error {
     color: rgb(107, 17, 17);
+}
+
+.label {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+}
+
+.daily {
+    &-detail {
+        @include glass(0.2, 4);
+        @include glass-border();
+        padding: 0.75rem;
+        text-align: center;
+        cursor: pointer;
+
+        &:hover {
+            @include glass(0.3, 4);
+        }
+        &.active {
+            @include glass(0.4, 6);
+        }
+
+        .min {
+            font-size: 0.8rem;
+            color: darken($color: #fff, $amount: 10%);
+        }
+    }
 }

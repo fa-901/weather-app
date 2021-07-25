@@ -29,7 +29,7 @@ export default function Display(props) {
     const time = dayjs.tz(date, weatherData.timezone).format('D MMMM YYYY, h:mm A')
 
     return (
-        <div className='glass p-3 current'>
+        <div className='glass p-3 current mb-3'>
             <div className="current-container">
                 <div className='current-location'>
                     {weatherData.location}
@@ -47,14 +47,14 @@ export default function Display(props) {
 
             <div className='row gx-0 text-center'>
                 <div className="col-lg-4">
-                    Feels Like {Math.round(weatherData.current.feels_like)} &deg;C
+                    Feels Like <b>{Math.round(weatherData.current.feels_like)} &deg;C</b>
                 </div>
                 <div className="col-lg-4">
                     {/* <i className="fas fa-long-arrow-alt-up" style={{ transform: `rotate(${weatherData.wind.deg}deg)` }}></i> */}
-                    Wind {_.round((weatherData.current.wind_speed * 3.6),1)} km/h
+                    Wind <b>{_.round((weatherData.current.wind_speed * 3.6),1)} km/h</b>
                 </div>
                 <div className="col-lg-4">
-                    Humidity {_.round(weatherData.current.humidity, 1)}%
+                    Humidity <b>{_.round(weatherData.current.humidity, 1)}%</b>
                 </div>
             </div>
         </div>
