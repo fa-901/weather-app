@@ -175,3 +175,17 @@ div#app {
         }
     }
 }
+
+.chart-area {
+    height: 270px;
+    padding: 1rem;
+    @include glass(0.2, 4);
+    @include glass-border();
+}
+
+.recharts-tooltip-wrapper {
+    .recharts-default-tooltip {
+        @include glass(0.2, 4);
+        @include glass-border();
+    }
+}

@@ -1,5 +1,14 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import AppContext from '../AppContext';
+import {
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Line,
+    ComposedChart,
+} from 'recharts';
 
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
@@ -12,32 +21,60 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 dayjs.extend(isBetween)
 
-export default function DisplayDisplay(props) {
+export default function HourlyDisplay(props) {
     const context = useContext(AppContext);
 
     const { weatherData, unit, hourlyData } = context;
     const { skip } = props;
 
-    const startTime = dayjs(weatherData.daily[skip].dt * 1000);
-    const endTime = startTime.add(skip + 1, 'day');
+    const startTime = dayjs(weatherData.daily[skip].dt * 1000).startOf('day');
+    const endTime = startTime.endOf('day');
 
-    const graphData = (hourlyData?.list || []).filter((e) => {
-        return dayjs(e.dt * 1000).isBetween(startTime, endTime, null, '[)')
+    const isCurrentDay = skip === 0;
+    const dataList = isCurrentDay ? (weatherData.hourly) : (hourlyData?.list || []); /**if on current day, show hourly data from weatherData.hourly instead */
+    const graphData = dataList.filter((e) => {
+        return dayjs(e.dt * 1000).isBetween(startTime, endTime, 'minute', '[]')
     }).map((e) => {
         const time = dayjs.tz((e.dt * 1000), weatherData.timezone).format('D MMM, h A');
-        const value = tempConversion(e.main.temp, unit);
+        const temp = tempConversion((isCurrentDay ? e.temp : e.main.temp), unit)
+        const value = temp;
         return {
             time: time,
             value: value,
         }
     });
 
-    console.log(graphData);
+    if (graphData.length < 1) {
+        return null;
+    }
 
     return (
         <div className='hourly mb-3'>
             <div className="label">
                 Hourly Forecast
+            </div>
+            <div className="chart-area">
+                <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={graphData}>
+                        <CartesianGrid strokeDasharray="5 5" />
+                        <XAxis
+                            dataKey="time"
+                            label={{ value: 'Time', offset: -5, position: 'insideBottom' }}
+                        />
+                        <YAxis
+                            label={{ value: 'Temperature', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                        />
+                        <Tooltip
+                            cursor={{ fill: 'transparent' }}
+                        />
+                        <Line
+                            type="monotone"
+                            dataKey="value"
+                            stroke="#fff"
+                            name="Value"
+                        />
+                    </ComposedChart>
+                </ResponsiveContainer>
             </div>
         </div>
     )

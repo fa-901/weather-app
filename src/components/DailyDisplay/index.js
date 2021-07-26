@@ -11,7 +11,7 @@ import HourlyDisplay from './HourlyDisplay';
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export default function DisplayDisplay(props) {
+export default function DailyDisplay(props) {
     const context = useContext(AppContext);
     const [activeIndex, setActive] = useState(0);
 
