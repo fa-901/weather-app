@@ -1,6 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
 
 $c1: #23074d;
+$t1: #21d4fd;
+$t2: #b721ff;
 $maxW: 720px;
 
 @mixin glass-border {
@@ -17,8 +19,8 @@ $maxW: 720px;
 
 body {
     font-family: "Nunito", sans-serif;
-    background-color: #21d4fd;
-    background-image: linear-gradient(19deg, #21d4fd 0%, #b721ff 100%);
+    background-color: $t1;
+    background-image: linear-gradient(19deg, $t1 0%, $t2 100%);
 }
 
 html,
@@ -162,16 +164,21 @@ div#app {
         text-align: center;
         cursor: pointer;
 
+        .min {
+            font-size: 0.8rem;
+            color: darken($color: #fff, $amount: 10%);
+        }
+
         &:hover {
             @include glass(0.3, 4);
         }
         &.active {
-            @include glass(0.4, 6);
-        }
+            @include glass(0.8, 3);
+            color: $c1;
 
-        .min {
-            font-size: 0.8rem;
-            color: darken($color: #fff, $amount: 10%);
+            .min {
+                color: lighten($color: $c1, $amount: 40%);
+            }
         }
     }
 }
@@ -188,4 +195,18 @@ div#app {
         @include glass(0.2, 4);
         @include glass-border();
     }
+}
+
+.recharts-text.recharts-cartesian-axis-tick-value,
+.recharts-text.recharts-label {
+    fill: #fff;
+}
+.recharts-cartesian-axis-tick-line,
+.recharts-cartesian-axis-line {
+    stroke: #fff;
+}
+
+.recharts-dot.recharts-line-dot {
+    stroke-width: 2px;
+    fill: $t1;
 }
