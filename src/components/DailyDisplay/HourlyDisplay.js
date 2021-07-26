@@ -23,6 +23,7 @@ dayjs.extend(isBetween)
 
 export default function HourlyDisplay(props) {
     const context = useContext(AppContext);
+    const [attribute, setAttribute] = useState('Temperature');
 
     const { weatherData, unit, hourlyData } = context;
     const { skip } = props;
@@ -37,7 +38,9 @@ export default function HourlyDisplay(props) {
     }).map((e) => {
         const time = dayjs.tz((e.dt * 1000), weatherData.timezone).format('h A');
         const temp = tempConversion((isCurrentDay ? e.temp : e.main.temp), unit)
-        const value = temp;
+        const wind = isCurrentDay ? e.wind_speed : e?.wind?.speed;
+        const prec = e.pop;
+        const value = attribute === 'Temperature' ? temp : attribute === 'Wind' ? wind : prec;
         return {
             time: time,
             value: value,
@@ -48,10 +51,23 @@ export default function HourlyDisplay(props) {
         return null;
     }
 
+    const btnList = ['Temperature', 'Precipitation', 'Wind'].map((e) => {
+        return (
+            <button className={`btn btn-glass ${(e === attribute) && 'active'}`} key={e} onClick={() => { setAttribute(e) }}>{e}</button>
+        )
+    });
+
+    const yUnit = attribute === 'Temperature' ? `° ${unit}` : attribute === 'Wind' ? 'm/s' : '%'
+
     return (
         <div className='hourly mb-3'>
-            <div className="label">
-                Hourly Forecast, {startTime.format('D MMM')}
+            <div className="d-flex justify-content-between align-items-end mb-2">
+                <div className="label">
+                    Hourly Forecast, {startTime.format('D MMM')}
+                </div>
+                <div className="btn-group">
+                    {btnList}
+                </div>
             </div>
             <div className="chart-area">
                 <ResponsiveContainer width="100%" height="100%">
@@ -63,11 +79,11 @@ export default function HourlyDisplay(props) {
                             label={{ value: 'Time', offset: -5, position: 'insideBottom' }}
                         />
                         <YAxis
-                            label={{ value: 'Temperature', angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
+                            label={{ value: attribute, angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
                         />
                         <Tooltip
                             cursor={{ fill: 'transparent' }}
-                            content={<CustomTooltip/>}
+                            content={<CustomTooltip unit={yUnit} />}
                         />
                         <Line
                             type="monotone"
@@ -82,15 +98,15 @@ export default function HourlyDisplay(props) {
     )
 }
 
-const CustomTooltip = ({payload}) => {
+const CustomTooltip = ({ payload, unit }) => {
     const value = payload[0]?.payload || {};
     return (
-        <div className='glass p-2'>
+        <div className='chart-tooltip p-2'>
             <div>
                 {value.time}
             </div>
             <div>
-                {value.value}
+                {value.value} {unit}
             </div>
         </div>
     )

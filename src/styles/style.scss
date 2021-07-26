@@ -153,7 +153,6 @@ div#app {
 
 .label {
     font-size: 1.2rem;
-    margin-bottom: 0.55rem;
 }
 
 .daily {
@@ -183,18 +182,35 @@ div#app {
     }
 }
 
+.btn-glass {
+    @include glass(0.2, 4);
+    @include glass-border();
+    color: #fff;
+    &:focus,
+    &:active,
+    &:hover {
+        color: #fff;
+        outline: none;
+        box-shadow: none;
+    }
+    &:hover {
+        @include glass(0.25, 3);
+    }
+    &.active {
+        @include glass(0.4, 3);
+    }
+}
+
 .chart-area {
     height: 270px;
     padding: 1rem;
     @include glass(0.2, 4);
     @include glass-border();
 }
-
-.recharts-tooltip-wrapper {
-    .recharts-default-tooltip {
-        @include glass(0.2, 4);
-        @include glass-border();
-    }
+.chart-tooltip {
+    @include glass(0.4, 4);
+    @include glass-border();
+    font-weight: bold;
 }
 
 .recharts-text.recharts-cartesian-axis-tick-value,

@@ -47,7 +47,7 @@ export default function DailyDisplay(props) {
     return (
         <Fragment>
             <div className='daily mb-4'>
-                <div className='label'>
+                <div className='label mb-2'>
                     Daily Forecast
                 </div>
                 <div className='row g-3'>

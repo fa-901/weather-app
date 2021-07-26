@@ -1,13 +1,12 @@
 # weather-app
- 
-A weather application built from with React and bundled with Parcel.
+A weather application built with React and bundled with Parcel.
 
 ## APIs
-- Weather data retrieved from Open Weather API. https://openweathermap.org/ 
-- City information and list retrieved frm GeoDB Cities API. http://geodb-cities-api.wirefreethought.com/
+- Weather data from Open Weather API. https://openweathermap.org/ 
+- City information and list from GeoDB Cities API. http://geodb-cities-api.wirefreethought.com/
 
 ## Features
-- Display weather data of given location (obviously)
+- Display weather data of given location (*you don't say?*)
 - Weekly Weather Forecasting
 - Text-based city suggestion
 - Temperature unit conversion
