@@ -91,6 +91,7 @@ export default function SearchBar(props) {
 
     function loadWeatherData(_city, _country, _coords) {
         const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${_coords.lat}&lon=${_coords.lng}&exclude=minutely,alerts&appid=${process.env.API_KEY}&units=metric`;
+        const hourlyUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${_coords.lat}&lon=${_coords.lng}&appid=${process.env.API_KEY}&units=metric`;
         context.toggleDataLoad(true);
         fetch(url)
             .then(response => {
@@ -110,6 +111,21 @@ export default function SearchBar(props) {
             .finally(() => {
                 context.toggleDataLoad(false);
             });
+
+        fetch(hourlyUrl)
+            .then(response => {
+                setLoad(false);
+                if (response.ok) {
+                    return response.json()
+                }
+                else {
+                    return Promise.reject(`oops.`)
+                }
+            })
+            .then(data => {
+                context.setHourlyData(data);
+            })
+            .catch(err => { });
     }
 
     const errDisplay = errMsg && (

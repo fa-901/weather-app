@@ -1,10 +1,12 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useContext, Fragment } from 'react';
 import AppContext from '../AppContext';
 
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { tempConversion } from '../../utils/functions';
+
+import HourlyDisplay from './HourlyDisplay';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -20,7 +22,7 @@ export default function DisplayDisplay(props) {
 
     const { weatherData, unit } = context;
 
-    const dailyList = weatherData.daily.map((e, i) => {
+    const dailyList = weatherData.daily.slice(0, 5).map((e, i) => {
         const time = dayjs.tz((e.dt * 1000), weatherData.timezone).format('MMM D')
         return (
             <div className='col-md' key={e.dt}>
@@ -43,13 +45,16 @@ export default function DisplayDisplay(props) {
     })
 
     return (
-        <div className='daily'>
-            <div className='label'>
-                Daily Forecast
+        <Fragment>
+            <div className='daily mb-4'>
+                <div className='label'>
+                    Daily Forecast
+                </div>
+                <div className='row g-3'>
+                    {dailyList}
+                </div>
             </div>
-            <div className='row g-2'>
-                {dailyList}
-            </div>
-        </div>
+            <HourlyDisplay skip={activeIndex} />
+        </Fragment>
     )
 }
