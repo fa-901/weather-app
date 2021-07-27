@@ -57,7 +57,15 @@ export default function HourlyDisplay(props) {
         )
     });
 
-    const yUnit = attribute === 'Temperature' ? `° ${unit}` : attribute === 'Wind' ? 'm/s' : '%'
+    const yUnit = attribute === 'Temperature' ? `°${unit}` : attribute === 'Wind' ? 'm/s' : '%';
+
+    const xAxisTicks = []; /**format ticks to 3hour intervals */
+    graphData.map((e, i) => {
+        const len = graphData.length;
+        if ((len > 8) && ((i % 3) === 0)) {
+            xAxisTicks.push(e.time);
+        }
+    })
 
     return (
         <div className='hourly mb-3'>
@@ -77,6 +85,7 @@ export default function HourlyDisplay(props) {
                             padding={{ left: 15, right: 15 }}
                             dataKey="time"
                             label={{ value: 'Time', offset: -5, position: 'insideBottom' }}
+                            ticks={xAxisTicks}
                         />
                         <YAxis
                             label={{ value: attribute, angle: -90, position: 'insideLeft', style: { textAnchor: 'middle' } }}
