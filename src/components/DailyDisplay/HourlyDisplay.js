@@ -28,7 +28,7 @@ export default function HourlyDisplay(props) {
     const { weatherData, unit, hourlyData } = context;
     const { skip } = props;
 
-    const startTime = dayjs(weatherData.daily[skip].dt * 1000).startOf('day');
+    const startTime = dayjs(weatherData.daily[skip].dt * 1000).tz(weatherData.timezone).startOf('day');
     const endTime = startTime.endOf('day');
 
     const isCurrentDay = skip === 0;
@@ -78,7 +78,7 @@ export default function HourlyDisplay(props) {
                 </div>
             </div>
             <div className="chart-area">
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" aspect={5}>
                     <ComposedChart data={graphData}>
                         <CartesianGrid strokeDasharray="5 5" />
                         <XAxis
@@ -95,7 +95,8 @@ export default function HourlyDisplay(props) {
                             content={<CustomTooltip unit={yUnit} />}
                         />
                         <Line
-                            type="monotone"
+                            isAnimationActive={false}
+                            // type="monotone"
                             dataKey="value"
                             stroke="#fff"
                             name="Value"

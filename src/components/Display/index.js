@@ -5,6 +5,7 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import _ from 'lodash';
 import { tempConversion } from '../../utils/functions';
+import WeatherIcon from '../Common/WeatherIcon';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -38,7 +39,8 @@ export default function Display(props) {
                     {time}
                 </div>
                 <div className='current-temp'>
-                    <span className='me-3'>{Math.round(tempConversion(weatherData.current.temp, unit))}&deg;</span>
+                    <WeatherIcon className={'current-icon'} icon={weatherData.current.weather[0].icon} />
+                    <span className='mx-3'>{Math.round(tempConversion(weatherData.current.temp, unit))}&deg;</span>
                     <div className='d-inline-block units'>
                         <span className={`d-block ${unit === 'C' && 'text-decoration-underline'}`} onClick={() => { toggleUnit('C') }} >C</span>
                         <span className={`d-block ${unit === 'F' && 'text-decoration-underline'}`} onClick={() => { toggleUnit('F') }}>F</span>

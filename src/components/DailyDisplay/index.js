@@ -7,6 +7,7 @@ import utc from 'dayjs/plugin/utc';
 import { tempConversion } from '../../utils/functions';
 
 import HourlyDisplay from './HourlyDisplay';
+import WeatherIcon from '../Common/WeatherIcon';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -29,6 +30,9 @@ export default function DailyDisplay(props) {
                 <div className={`daily-detail ${activeIndex === i && 'active'}`} onClick={() => { setActive(i) }}>
                     <div className="date">
                         {time}
+                    </div>
+                    <div>
+                        <WeatherIcon className={'daily-icon my-2'} icon={e.weather[0].icon} />
                     </div>
                     <span className="max me-2">
                         {Math.round(tempConversion(e.temp.max, unit))}&deg;
