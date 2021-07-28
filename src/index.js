@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import App from './components/App';
 import ErrorBoundary from './components/ErrorBoundary';
-import "./styles/style.scss";
+import "./assets/styles/style.scss";
 import dotenv from "dotenv";
 
 dotenv.config();
