@@ -48,6 +48,10 @@ export default function DailyDisplay(props) {
         )
     })
 
+    if (context.dataLoading) {
+        return null;
+    }
+
     return (
         <Fragment>
             <div className='daily mb-4'>

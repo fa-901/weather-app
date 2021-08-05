@@ -93,6 +93,14 @@ export default function SearchBar(props) {
         const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${_coords.lat}&lon=${_coords.lng}&exclude=minutely,alerts&appid=${process.env.API_KEY}&units=metric`;
         const hourlyUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${_coords.lat}&lon=${_coords.lng}&appid=${process.env.API_KEY}&units=metric`;
         context.toggleDataLoad(true);
+        let count = 0;
+        let countFn = () => {
+            count += 1;
+            if (count === 2) {
+                context.toggleDataLoad(false);
+                count = 0
+            }
+        }
         fetch(url)
             .then(response => {
                 setLoad(false);
@@ -109,7 +117,7 @@ export default function SearchBar(props) {
             })
             .catch(err => { setErrMsg(err); context.setWeatherData(null) })
             .finally(() => {
-                context.toggleDataLoad(false);
+                countFn();
             });
 
         fetch(hourlyUrl)
@@ -125,7 +133,10 @@ export default function SearchBar(props) {
             .then(data => {
                 context.setHourlyData(data);
             })
-            .catch(err => { });
+            .catch(err => { context.setHourlyData(null); })
+            .finally(() => {
+                countFn();
+            });
     }
 
     const errDisplay = errMsg && (

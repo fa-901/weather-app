@@ -95,7 +95,7 @@ export default function HourlyDisplay(props) {
                             content={<CustomTooltip unit={yUnit} />}
                         />
                         <Line
-                            isAnimationActive={false}
+                            isAnimationActive={!context.dataLoading}
                             // type="monotone"
                             dataKey="value"
                             stroke="#fff"
