@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import _ from 'lodash';
-import { tempConversion } from '../../utils/functions';
+import { tempConversion, humanizeStr } from '../../utils/functions';
 import WeatherIcon from '../Common/WeatherIcon';
 
 dayjs.extend(utc)
@@ -47,7 +47,7 @@ export default function Display(props) {
                     </div>
                 </div>
                 <div className='current-desc'>
-                    {weatherData.current.weather[0].main}
+                    {humanizeStr(weatherData.current.weather[0].description)}
                 </div>
             </div>
 
