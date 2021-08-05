@@ -33,7 +33,7 @@ export default function SearchBar(props) {
     function getLocationData(position) {
         const { latitude, longitude } = position.coords;
         const locationStr = `${encodePlusMinus(latitude)}${_.round(latitude, 4)}${encodePlusMinus(longitude)}${_.round(longitude, 4)}`;
-        const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&location=${locationStr}&sort=-population`;
+        const url = `https://cors-anywhere.herokuapp.com/geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&location=${locationStr}&sort=-population`;
         context.toggleDataLoad(true);
         fetch(url)
             .then(response => {
@@ -54,7 +54,7 @@ export default function SearchBar(props) {
             setList([]);
             return
         }
-        const url = `http://geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
+        const url = `https://cors-anywhere.herokuapp.com/geodb-free-service.wirefreethought.com/v1/geo/cities?limit=5&offset=0&namePrefix=${val}&sort=name,countryCode`;
         fetch(url)
             .then(response => {
                 setLoad(false);
